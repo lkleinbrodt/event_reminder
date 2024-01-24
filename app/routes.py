@@ -308,6 +308,9 @@ def delete_special_date(label):
 
 @app.route('/login-as-test')
 def login_as_test():
+    if Config.ENV != 'dev':
+        return redirect(url_for('index'))
+    
     test_phone_number = '123456789'
     user = User.query.filter_by(phone_number=test_phone_number).first()
     
