@@ -1,0 +1,14 @@
+flask
+flask_sqlalchemy
+flask-Login
+Flask-Migrate
+flask_wtf
+phonenumbers
+python-dotenv
+Flask-Limiter
+bootstrap-flask
+requests
+pytz
+twilio
+apscheduler
+flask-admin
