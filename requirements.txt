@@ -14,3 +14,4 @@ requests
 pytz==2023.3
 twilio==8.11.1
 APScheduler==3.10.4
+gunicorn==21.2.0
