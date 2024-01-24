@@ -23,3 +23,7 @@ class Config:
     TWILIO_NUMBER = os.environ['TWILIO_NUMBER']
     
     MAIL_SERVER = None
+    
+    AWS_ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY')
+    AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
+    S3_BUCKET = os.environ.get('S3_BUCKET')
