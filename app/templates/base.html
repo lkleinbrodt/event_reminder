@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Add Bootstrap CSS link -->
+    
+    {{ bootstrap.load_css() }}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/css/intlTelInput.css">
+    
+    <style>
+    
+        body {
+            padding-top: 0px; /* Adjust according to your navbar height */
+        }
+        
+        nav a {
+            color: #ffffff; /* White text color for links */
+        }
+
+        .flash-message {
+            text-align: center;
+            font-weight: bold;
+            color: blue;
+            margin-top: 20px;
+        }
+
+        .error-message {
+            color: red;
+        }
+
+        .custom-container {
+            display: flex;
+            width: 33%;
+            justify-content: center;
+        }
+
+        .navbar-item {
+            width: 33.33%
+        }
+
+
+        .navbar-item a {
+            text-align: center;
+            font-size: 2em;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+            color: white;
+        }
+
+        .navbar-item a:hover {
+            text-decoration: none;
+            color: white;
+            transform: scale(1.25);
+        }
+
+        .right a {
+            text-align: right;
+            color: grey;
+            font-size: 1em;
+            font-weight: regular;
+        }
+
+        .left a {
+            text-align: left;
+            color: grey;
+            font-size: 1em;
+            font-weight: regular;
+        }
+        
+    </style>
+
+    <title>{% if title %}{{ title }}{% else %}Welcome{% endif %}</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container custom-container">
+        
+        <div class="navbar-item right" id="navbarNav">
+            {% if not current_user.is_anonymous %}
+                <a class='nav-link' href="{{ url_for('settings') }}">Settings</a>
+            {% else %}
+                <a class='nav-link' href="{{ url_for('settings') }}" style="visibility: hidden;">Settings</a>
+            {% endif %}
+        </div>
+        
+        <div class="navbar-item">
+            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+        </div>
+
+        <div class="navbar-item left" id="navbarNav">
+            {% if current_user.is_anonymous %}
+                    <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+            {% else %}
+                    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+            {% endif %}
+        </div>
+    </div>
+    </nav>
+    <div class="container">
+        <div class="flash-message">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.type == 'error' %}
+                            <h3 class="error-message">{{ message }}</h3>
+                        {% elif message.type == 'message' %}
+                            <h3 class="message-message">{{ message }}</h3>
+                        {% else %}
+                            <h3>{{ message }}</h3>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+
+    {% block content %}{% endblock %}
+
+
+    </div>
+    
+    <!-- Add Bootstrap JS and jQuery -->
+    {{ bootstrap.load_js() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/intlTelInput.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        //navbarItems.forEach(function (item) {
+        //    var navbarItems = document.querySelectorAll('.navbar-item left');
+        //    item.style.visibility = 'hidden';
+        //});
+    </script>
+
+</body>
+</html>

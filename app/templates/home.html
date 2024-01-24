@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    .big.container.mt-5 {
+        margin-bottom: 10vh;
+    }
+
+    .card-title {
+        margin-bottom: 0px;
+    }
+
+    .container-buttons {
+        margin-top: 10px;
+    }
+
+</style>
+
+<div class="big container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title text-center">Hello {{ current_user.display_phone_number() }}</h1>
+                    
+                    <div class="container-buttons mt-3 text-center">
+                        <!-- Buttons to open modals -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSpecialDateModal">
+                            Add a Special Date
+                        </button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addRecurringDateModal">
+                            Add a Recurring Date
+                        </button>
+                    </div>
+
+                    <!-- Modals -->
+                    <!-- Add Special Date Modal -->
+                    <div class="modal fade" id="addSpecialDateModal" tabindex="-1" role="dialog" aria-labelledby="addSpecialDateModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addSpecialDateModalLabel">Add a Special Date</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="special-date-form" method="post" action="{{url_for('add_special_date')}}">
+                                        {{ special_date_form.hidden_tag() }}
+                                        
+                                        <div class="form-group">
+                                            {{ special_date_form.date_input.label }}
+                                            {{ special_date_form.date_input }}
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            {{ special_date_form.label_input.label }}
+                                            {{ special_date_form.label_input }}
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-primary btn-block">
+                                            {{ special_date_form.save_event_button() }}
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="addRecurringDateModal" tabindex="-1" role="dialog" aria-labelledby="addRecurringDateModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addRecurringDateModalLabel">Add a Recurring Date</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="recurring-date-form" method="post" action="{{url_for('add_recurring_date')}}">
+                                        {{ recurring_date_form.hidden_tag() }}
+                                        
+                                        <div class="form-group">
+                                            {{ recurring_date_form.month_input.label }}
+                                            {{ recurring_date_form.month_input(class="form-control") }}
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            {{ recurring_date_form.day_input.label }}
+                                            {{ recurring_date_form.day_input(class="form-control") }}
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            {{ recurring_date_form.label_input.label }}
+                                            {{ recurring_date_form.label_input(class="form-control") }}
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-primary btn-block">
+                                            {{ recurring_date_form.save_event_button() }}
+                                            
+                                        </button>
+                                    </form>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Display Special Dates -->
+                    <div id="specialDatesList" class="mt-4">
+                        <h3 class="text-center">Dates</h3>
+                        <ul class="list-group">
+                            {% if current_user.special_dates %}
+                                {% for special_date in current_user.special_dates %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            {{ special_date.label }} - {{ special_date.date.strftime('%Y-%m-%d') }}
+                                        </div>
+                                        <form method="post" action="{{ url_for('delete_special_date', label=special_date.label) }}" style="display: inline;">
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this date?')">
+                                                <span aria-hidden="true">&times;</span> <!-- Red X symbol -->
+                                            </button>
+                                        </form>
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                <li class="list-group-item text-center">No dates yet</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <!-- Display Special Dates -->
+                    <div id="recurringDatesList" class="mt-4">
+                        <h3 class="text-center">Recurring Dates</h3>
+                        <ul class="list-group">
+                            {% if current_user.recurring_dates %}
+                                {% for recurring_date in current_user.recurring_dates %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            {{ recurring_date.label }} - {{ recurring_date.get_month_word() }} {{ recurring_date.day }}
+                                        </div>
+                                        <form method="post" action="{{ url_for('delete_recurring_date', label=recurring_date.label) }}" style="display: inline;">
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this date?')">
+                                                <span aria-hidden="true">&times;</span> <!-- Red X symbol -->
+                                            </button>
+                                        </form>
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                <li class="list-group-item text-center">No dates yet</li>
+                            {% endif %}
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+    
+</script>
+
+{% endblock %}

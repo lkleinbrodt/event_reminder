@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% from 'bootstrap5/form.html' import render_form%}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login</title>
+
+    <script src="https://unpkg.com/imask"></script>
+
+
+
+
+    <!-- Your custom styles -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: auto;
+            padding: 30px;
+            margin-top: 50px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 10px;
+        }
+
+        .login-form {
+            margin-top: 20px;
+        }
+
+        .btn-login {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container login-container">
+        <h2 class="text-center">Log In</h2>
+        <form class="login-form" method="post" action="{{ url_for('login') }}">
+            {{ form.csrf_token }}
+            <div class="form-group">
+                <label for="phone_number">Phone Number</label>
+                <input type="tel" name="phone_number" class="form-control" id="phoneNumber">
+                {% for error in form.phone_number.errors %}
+                    <small class="text-danger">{{ error }}</small>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-login btn-block">Log In</button>
+            <button type="button" class="btn btn-secondary btn-block" id="testLoginBtn">Log In as Test</button>
+        
+        </form>
+        
+    </div>
+
+    
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+        
+
+</body>
+
+<script>
+
+    document.getElementById('testLoginBtn').addEventListener('click', function() {
+        // Redirect to the special login endpoint
+        window.location.href = '/login-as-test';
+    });
+
+    IMask(
+        document.getElementById('phoneNumber'),
+        {
+            mask: '+{1} (000)-000-0000'
+        }
+        )
+
+    
+
+</script>
+
+
+
+
+
+</html>
+{% endblock %}

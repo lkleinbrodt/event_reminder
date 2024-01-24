@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Your custom styles -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .verification-container {
+            max-width: 400px;
+            margin: auto;
+            padding: 30px;
+            margin-top: 50px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 10px;
+        }
+
+        .verification-form {
+            margin-top: 20px;
+        }
+
+        .btn-verify {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container verification-container">
+        <h2 class="text-center">Verification</h2>
+
+        {% if phone_number %}
+            <p>Verification code sent to {{ phone_number }}</p>
+
+            <form class="verification-form" method="post" action="{{ url_for('verify') }}">
+                {{ form.hidden_tag() }}
+
+                <input type="hidden" name="phone_number" value="{{ phone_number }}">
+
+                <div class="form-group">
+                    <label for="verification_code">Enter Verification Code:</label>
+                    {{ form.verification_code(class="form-control", id="verification_code") }}
+                    {% for error in form.verification_code.errors %}
+                        <small class="text-danger">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="btn btn-verify btn-block">Verify</button>
+            </form>
+        {% else %}
+            <p>No phone number provided for verification.</p>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
+{% endblock %}
