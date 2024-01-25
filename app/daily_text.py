@@ -62,4 +62,5 @@ def daily_text():
     return True
 
 if __name__ == '__main__':
-    daily_text()
+    with app.app_context():
+        daily_text()
