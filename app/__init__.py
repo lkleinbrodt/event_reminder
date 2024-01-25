@@ -9,12 +9,12 @@ from logging.handlers import SMTPHandler, RotatingFileHandler
 from apscheduler.schedulers.background import BackgroundScheduler
 from pytz import timezone
 
-from app.s3 import S3
+
 from app.twilio_bot import TwilioTextBot
 
 import logging
 import os
-from datetime import datetime
+
 from config import Config
 
 
@@ -65,32 +65,22 @@ if not app.debug:
     app.logger.info('birthdays startup')
     
         
-from app import routes, models
-from app.daily_text import daily_text
+from app import routes, models, errors
+# from app.daily_text import daily_text
 
-import atexit
-from pytz import timezone
+# import atexit
 
-scheduler = BackgroundScheduler(timezone='America/Los_Angeles')
-scheduler.start()
-scheduler.add_job(daily_text, 'cron', hour=9, minute=0)
 
-def save_db_to_s3():
-    s3 = S3()
-    today = datetime.now(timezone('America/Los_Angeles')).date()
-    try:
-        s3.upload_file('app.db', f'app_{today}.db')
-    except:
-        app.logger.exception('Failed to upload app.db to S3')
-    return True
-
-scheduler.add_job(save_db_to_s3, 'cron', hour=0, minute=10)
+# scheduler = BackgroundScheduler(timezone='America/Los_Angeles')
+# scheduler.start()
+# scheduler.add_job(daily_text, 'cron', hour=9, minute=0)
+# scheduler.add_job(save_db_to_s3, 'cron', hour=0, minute=10)
+# atexit.register(lambda: scheduler.shutdown())
 
 admin.add_view(ModelView(models.User, db.session))
 admin.add_view(ModelView(models.SpecialDate, db.session))
 admin.add_view(ModelView(models.RecurringDate, db.session))
 
-atexit.register(lambda: scheduler.shutdown())
 
 with app.app_context():
     db.create_all()

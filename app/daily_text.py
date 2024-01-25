@@ -60,3 +60,6 @@ def daily_text():
         
     app.logger.info('Sent daily texts')
     return True
+
+if __name__ == '__main__':
+    daily_text()

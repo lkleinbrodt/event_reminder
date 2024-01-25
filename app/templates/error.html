@@ -1,18 +1,8 @@
-{% extends "error.html" %}
+{% extends "base.html"%}
 
-{% block content %}
 <div class="container mt-5">
-    <div class="text-center">            
-        <h1 class="mt-3">Oops! An unexpected error occurred</h1>
-        <p class="lead">Don't worry, our team is on the case!</p>
-        <button class="btn btn-primary mt-3" onclick="goBack()">Go Back</button>
-    </div>
-</div>
-<div class="container mt-5">
-    <div class="text-center">   
     <p class="mb-4">In the meantime, here's a picture of a robot.</p>
     <img src="https://robohash.org/sweet" alt="Robot Image" id='roboImage' style="display: hidden;">
-    </div>
 </div>
 
 <script>
@@ -34,11 +24,3 @@
     robotImage.src = `https://robohash.org/${randomString}`;
     robotImage.style.display = 'visible';  // Change 'visible' to 'block'
 </script>
-
-
-    <script>
-        function goBack() {
-            window.history.back();
-        }
-    </script>
-{% endblock %}
