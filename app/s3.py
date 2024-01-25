@@ -17,11 +17,11 @@ class S3:
         self.s3 = create_s3_client()
         self.bucket = Config.S3_BUCKET
         
-    def load_csv(self, path):
-        s3_object = self.s3.get_object(Bucket=self.bucket, Key=path)
-        contents = s3_object["Body"].read()
-        df = pd.read_csv(BytesIO(contents))
-        return df
+    # def load_csv(self, path):
+    #     s3_object = self.s3.get_object(Bucket=self.bucket, Key=path)
+    #     contents = s3_object["Body"].read()
+    #     df = pd.read_csv(BytesIO(contents))
+    #     return df
     
     def download_file(self, s3_path, local_path):
         self.s3.download_file(Bucket = self.bucket, Key = s3_path, Filename=local_path)
