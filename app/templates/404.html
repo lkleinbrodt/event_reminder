@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "errors.html" %}
 
 {% block content %}
     <div class="container mt-5">
@@ -9,31 +9,4 @@
             <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">Go Back to Safety</a>
         </div>
     </div>
-    <div class="container mt-5">
-        <div class="text-center">   
-        <p class="mb-4">In the meantime, here's a picture of a robot.</p>
-        <img src="https://robohash.org/sweet" alt="Robot Image" id='roboImage' style="display: hidden;">
-        </div>
-    </div>
-    
-    <script>
-        function generateRandomString(length) {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let result = '';
-            for (let i = 0; i < length; i++) {
-                result += characters.charAt(Math.floor(Math.random() * characters.length));
-            }
-            return result;
-        }
-    
-        // Get the link element by its ID
-        var robotImage = document.getElementById('roboImage');
-    
-        // Generate a random string of length 6
-        const randomString = generateRandomString(6);
-    
-        robotImage.src = `https://robohash.org/${randomString}`;
-        robotImage.style.display = 'visible';  // Change 'visible' to 'block'
-    </script>
-    
 {% endblock %}

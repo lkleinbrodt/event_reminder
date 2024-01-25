@@ -128,14 +128,14 @@
                                 {% for special_date in current_user.get_sorted_special_dates() %}
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <div>
-                                            <strong>{{ special_date.label }}</strong> <!-- Beautiful display for the label -->
+                                            <strong>{{ special_date.label }}</strong> 
                                             <br>
-                                            {{ special_date.date.strftime('%Y-%m-%d') }} <!-- Beautiful but less imposing display for the date -->
+                                            {{ special_date.date.strftime('%Y-%m-%d') }}
                                         </div>
                                         <div>
                                             <form method="post" action="{{ url_for('delete_special_date', label=special_date.label) }}" style="display: inline;">
                                                 <button type="button" class="btn btn-sm btn-danger" onclick="showConfirmation('Are you sure you want to delete this date?', '{{ url_for('delete_special_date', label=special_date.label) }}')">
-                                                    <span aria-hidden="true">&times;</span> <!-- Red X symbol -->
+                                                    <span aria-hidden="true">&times;</span> 
                                                 </button>
                                             </form>
                                         </div>
@@ -154,7 +154,9 @@
                                 {% for recurring_date in current_user.get_sorted_recurring_dates() %}
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <div data-toggle="tooltip" data-placement="top" title="({{recurring_date.get_days_away()}} days away)" style="cursor: default;" onclick="openTooltipOnMobile(this)">
-                                            {{ recurring_date.label }} - {{ recurring_date.get_month_word() }} {{ recurring_date.day }}
+                                            <strong>{{ recurring_date.label }}</strong>
+                                            <br>
+                                            {{ recurring_date.get_month_word() }} {{ recurring_date.day }}
                                         </div>
                                         <form method="post" action="{{ url_for('delete_recurring_date', label=recurring_date.label) }}" style="display: inline;">
                                             <button type="button" class="btn btn-sm btn-danger" onclick="showConfirmation('Are you sure you want to delete this date?', '{{ url_for('delete_recurring_date', label=recurring_date.label) }}')">

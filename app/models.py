@@ -200,7 +200,7 @@ class RecurringDate(db.Model):
     
     def to_date(self):
         today = datetime.now().date()
-        return datetime(today.year, self.month, self.day)
+        return datetime(today.year, self.month, self.day).date()
     
     def get_days_away(self):
         """
