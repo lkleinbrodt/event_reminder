@@ -56,7 +56,7 @@ class User(UserMixin, db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     phone_number = db.Column(db.String(15), unique=True, nullable=False)
     verification_code = db.Column(db.String(6))
-    verification_code_timestamp = db.Column(DateTime(timezone=True), server_default=func.now(pytz.utc))
+    verification_code_timestamp = db.Column(DateTime(timezone=True), server_default=func.now())
 
     special_dates = db.relationship('SpecialDate', backref='user', lazy=True)
     recurring_dates = db.relationship('RecurringDate', backref='user', lazy=True)
