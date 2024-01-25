@@ -80,6 +80,33 @@ class User(UserMixin, db.Model):
         """
         return format_phone_number(self.phone_number)
     
+    def get_sorted_special_dates(self):
+        """
+        Returns the special dates associated with the user sorted by date.
+
+        Returns:
+            list: The sorted special dates.
+        """
+        return sorted(self.special_dates, key=lambda x: x.to_date())
+
+    def get_sorted_recurring_dates(self):
+        """
+        Returns the recurring dates associated with the user sorted by date.
+
+        Returns:
+            list: The sorted recurring dates.
+        """
+        return sorted(self.recurring_dates, key=lambda x: x.to_date())
+    
+    def get_sorted_dates(self):
+        """
+        Returns all dates associated with the user sorted by date.
+
+        Returns:
+            list: The sorted dates.
+        """
+        return sorted(self.special_dates + self.recurring_dates, key=lambda x: x.to_date())
+    
 
     def __repr__(self):
         return f"User('{self.phone_number}')"
@@ -120,6 +147,16 @@ class SpecialDate(db.Model):
     
     def to_date(self):
         return self.date
+    
+    def get_days_away(self):
+        """
+        Returns the number of days until the special date.
+
+        Returns:
+            int: The number of days until the special date.
+        """
+        today = datetime.now().date()
+        return (self.to_date() - today).days
     
 class RecurringDate(db.Model):
     """
@@ -164,6 +201,16 @@ class RecurringDate(db.Model):
     def to_date(self):
         today = datetime.now().date()
         return datetime.date(today.year, self.month, self.day)
+    
+    def get_days_away(self):
+        """
+        Returns the number of days until the special date.
+
+        Returns:
+            int: The number of days until the special date.
+        """
+        today = datetime.now().date()
+        return (self.to_date() - today).days
 
 @login.user_loader
 def load_user(user_id):

@@ -19,6 +19,7 @@ class LoginForm(FlaskForm):
     def validate_phone_number(form, field):
         stripped_number = ''.join(filter(str.isdigit, field.data))
         if len(stripped_number) != 11:
+            print(stripped_number)
             raise ValidationError('Please enter a 10 digit phone number. (Only U.S. numbers are supported)')
         try:
             input_number = phonenumbers.parse(stripped_number)

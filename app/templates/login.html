@@ -13,10 +13,6 @@
 
     <script src="https://unpkg.com/imask"></script>
 
-
-
-
-    <!-- Your custom styles -->
     <style>
         body {
             background-color: #f8f9fa;
@@ -64,7 +60,6 @@
     </div>
 
     
-
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -77,20 +72,21 @@
 </body>
 
 <script>
-
-    document.getElementById('testLoginBtn').addEventListener('click', function() {
-        // Redirect to the special login endpoint
-        window.location.href = '/login-as-test';
-    });
+    
+    if (document.getElementById('testLoginBtn')) {
+        document.getElementById('testLoginBtn').addEventListener('click', function() {
+            // Redirect to the special login endpoint
+            window.location.href = '/login-as-test';
+        });
+    }
 
     IMask(
         document.getElementById('phoneNumber'),
         {
             mask: '+{1} (000)-000-0000'
         }
-        )
+    )
 
-    
 
 </script>
 

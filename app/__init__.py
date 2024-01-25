@@ -1,34 +1,26 @@
 from flask import Flask
-from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap5
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+from logging.handlers import SMTPHandler, RotatingFileHandler
+from apscheduler.schedulers.background import BackgroundScheduler
+from pytz import timezone
 
 from app.s3 import S3
+from app.twilio_bot import TwilioTextBot
 
 import logging
-from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
-# from twilio.rest import Client
-from flask_migrate import Migrate
 from datetime import datetime
-
-
-from app.twilio_bot import TwilioTextBot
-text_bot = TwilioTextBot(
-    account_sid=Config.TWILIO_ACCOUNT_SID, 
-    auth_token=Config.TWILIO_AUTH_TOKEN,
-    phone_number = Config.TWILIO_NUMBER
-)
-
-from apscheduler.schedulers.background import BackgroundScheduler
+from config import Config
 
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
 bootstrap = Bootstrap5(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, render_as_batch=True)
@@ -36,6 +28,11 @@ login = LoginManager(app)
 login.login_view = 'login' #name of endpoint for the login view in routes.py, same as url_for()
 admin = Admin(app, name = 'Admin Panel', template_mode='bootstrap3')
 
+text_bot = TwilioTextBot(
+    account_sid=Config.TWILIO_ACCOUNT_SID, 
+    auth_token=Config.TWILIO_AUTH_TOKEN,
+    phone_number = Config.TWILIO_NUMBER
+)
 
 if not app.debug:
     if app.config['MAIL_SERVER']:
@@ -94,3 +91,6 @@ admin.add_view(ModelView(models.SpecialDate, db.session))
 admin.add_view(ModelView(models.RecurringDate, db.session))
 
 atexit.register(lambda: scheduler.shutdown())
+
+with app.app_context():
+    db.create_all()

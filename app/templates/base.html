@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Add Bootstrap CSS link -->
-    
     {{ bootstrap.load_css() }}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/css/intlTelInput.css">
@@ -34,6 +32,12 @@
             display: flex;
             width: 33%;
             justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .custom-container {
+                width: 100%;
+            }
         }
 
         .navbar-item {

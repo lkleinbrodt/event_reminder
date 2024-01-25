@@ -107,19 +107,11 @@ def settings():
     elif request.method == 'POST':
         form = SettingsForm(request.form)
     
-    print('current value for remind_7_days', current_user.remind_7_days)
-    print('current value for remind_3_days', current_user.remind_3_days)
-    print('current value for remind_1_day', current_user.remind_1_day)
-    print('current value for remind_on_day', current_user.remind_on_day)
+
     
     if request.method == 'POST' and form.validate_on_submit():
         # Update user settings in the database
         user = User.query.filter_by(id=current_user.id).first()
-
-        print('form value for remind_7_days', form.remind_7_days.data)
-        print('form value for remind_3_days', form.remind_3_days.data)
-        print('form value for remind_1_day', form.remind_1_day.data)
-        print('form value for remind_on_day', form.remind_on_day.data)
 
         user.remind_7_days = form.remind_7_days.data
         user.remind_3_days = form.remind_3_days.data
@@ -129,12 +121,7 @@ def settings():
         try:
             db.session.commit()
             flash('Settings successfully updated.', 'success')
-            print('new user value')
             user = User.query.filter_by(id=current_user.id).first()
-            print('new value for remind_7_days', user.remind_7_days)
-            print('new value for remind_3_days', user.remind_3_days)
-            print('new value for remind_1_day', user.remind_1_day)
-            print('new value for remind_on_day', user.remind_on_day)
             redirect(url_for('settings'))
         except IntegrityError:
             db.session.rollback()
