@@ -1,10 +1,10 @@
 {
     "crons": [{
-        "path": "python app/daily_text.py",
+        "path": "/app/daily_text.py",
         "schedule": "0 17 * * *"
     },
     {
-        "path": "python app/backup_database.py",
+        "path": "/app/backup_database.py",
         "schedule": "10 8 * * *"
     }]
 }
