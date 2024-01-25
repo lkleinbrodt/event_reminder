@@ -10,7 +10,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from pytz import timezone
 
 
-from app.twilio_bot import TwilioTextBot
+
 
 import logging
 import os
@@ -27,6 +27,9 @@ migrate = Migrate(app, db, render_as_batch=True)
 login = LoginManager(app)
 login.login_view = 'login' #name of endpoint for the login view in routes.py, same as url_for()
 admin = Admin(app, name = 'Admin Panel', template_mode='bootstrap3')
+
+
+from app.twilio_bot import TwilioTextBot
 
 text_bot = TwilioTextBot(
     account_sid=Config.TWILIO_ACCOUNT_SID, 
@@ -54,15 +57,15 @@ if not app.debug:
         os.mkdir('logs')
     
     # rotates logs, keeping last 10 files with a max size of 10kb
-    file_handler = RotatingFileHandler('logs/birthdays.log', maxBytes=10240, backupCount=10)
+    # vercel doesnt like this
+    # file_handler = RotatingFileHandler('logs/birthdays.log', maxBytes=10240, backupCount=10)
     
-    file_handler.setFormatter(logging.Formatter(
-        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+    # file_handler.setFormatter(logging.Formatter(
+    #     '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
     
-    file_handler.setLevel(logging.INFO)
-    app.logger.addHandler(file_handler)
-    app.logger.setLevel(logging.INFO)
-    app.logger.info('birthdays startup')
+    # file_handler.setLevel(logging.INFO)
+    # app.logger.addHandler(file_handler)
+    # app.logger.setLevel(logging.INFO)
     
         
 from app import routes, models, errors
