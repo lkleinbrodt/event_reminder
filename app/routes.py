@@ -44,7 +44,6 @@ def home():
 @app.route('/login', methods=['POST', 'GET'])
 @limiter.limit("5 per 5 seconds")  # Adjust the limit as needed
 def login():
-    fdsaf
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     
