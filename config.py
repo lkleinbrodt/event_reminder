@@ -11,10 +11,10 @@ class Config:
     if SECRET_KEY is None:
         raise ValueError("No SECRET_KEY set for Flask application")
     
-    if ENV == 'prod':
+    if ENV == 'dev':
         SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(ROOT_DIR, 'app.db')
     else:
-        SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(ROOT_DIR, 'dev_app.db')
+        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
 
     TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
     TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID')
