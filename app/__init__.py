@@ -52,12 +52,13 @@ if not app.debug:
             credentials=auth, secure=secure)
         mail_handler.setLevel(logging.ERROR)
         app.logger.addHandler(mail_handler)
+    
+    # vercel doesnt like this, read only file system
         
-    if not os.path.exists('logs'):
-        os.mkdir('logs')
+    # if not os.path.exists('logs'):
+    #     os.mkdir('logs')
     
     # rotates logs, keeping last 10 files with a max size of 10kb
-    # vercel doesnt like this
     # file_handler = RotatingFileHandler('logs/birthdays.log', maxBytes=10240, backupCount=10)
     
     # file_handler.setFormatter(logging.Formatter(
