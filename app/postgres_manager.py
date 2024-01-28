@@ -434,4 +434,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    comp_file = compress_file("backups/backup.sql")
+    filename_compressed = 'test.gz'
+    upload_to_s3(comp_file, filename_compressed)
