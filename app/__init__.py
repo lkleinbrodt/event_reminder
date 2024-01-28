@@ -26,6 +26,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db, render_as_batch=True)
 login = LoginManager(app)
 login.login_view = 'login' #name of endpoint for the login view in routes.py, same as url_for()
+
 admin = Admin(app, name = 'Admin Panel', template_mode='bootstrap3')
 
 

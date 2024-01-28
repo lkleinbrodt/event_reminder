@@ -41,6 +41,8 @@ def text_one_user(text_bot: TwilioTextBot, user: User):
     
 
 def daily_text():
+    # a much more efficient way would be to iterate through the dates, 
+    # and compile a dict of users
     # I'm creating a new text bot here, rather than using the one owned by created in init
     # because I dont want these texts to count for the rate limit / be stopped by it
 
@@ -49,14 +51,17 @@ def daily_text():
         auth_token=Config.TWILIO_AUTH_TOKEN,
         phone_number = Config.TWILIO_NUMBER
     )
-
-    # Loop over every user in the database
-    users = User.query.all()
-    for user in users:
-        try:
-            text_one_user(text_bot, user)
-        except Exception as e:
-            app.logger.exception(f'Error sending daily text to {user.phone_number} - {e}')
+    
+    if Config.ENV == 'prod':
+        users = User.query.all()
+        for user in users:
+            try:
+                text_one_user(text_bot, user)
+            except Exception as e:
+                app.logger.exception(f'Error sending daily text to {user.phone_number} - {e}')
+    else:
+        user = User.query.filter_by(phone_number='14153064760').first()
+        text_one_user(text_bot, user)
         
     app.logger.info('Sent daily texts')
     return True
