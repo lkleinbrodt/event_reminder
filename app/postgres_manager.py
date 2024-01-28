@@ -23,7 +23,7 @@ import datetime
 
 from shutil import move
 
-AWS_BUCKET_NAME = os.environ.get('S3_BUCKEt')
+AWS_BUCKET_NAME = os.environ['S3_BUCKET']
 AWS_BUCKET_PATH = 'postgres/'
 BACKUP_PATH = '/tmp/'
 
