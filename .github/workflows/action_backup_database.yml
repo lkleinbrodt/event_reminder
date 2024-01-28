@@ -3,6 +3,7 @@ name: Backup Database
 on:
   schedule:
     - cron: '0 */6 * * *'  # Schedule to run every 6 hours
+  workflow_dispatch:
 
 jobs:
   run_scheduled_scripts:

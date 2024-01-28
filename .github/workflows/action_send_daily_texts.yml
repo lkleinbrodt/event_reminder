@@ -3,6 +3,7 @@ name: Send Daily Texts
 on:
   schedule:
     - cron: '0 17 * * *'  # Schedule to run every day at midnight UTC
+  workflow_dispatch:
 
 jobs:
   run:
