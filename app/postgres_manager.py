@@ -312,7 +312,7 @@ def main():
     # config = configparser.ConfigParser()
     # config.read(args.configfile)
 
-    postgres_host = os.environ.get('DATABASE_HOST')
+    postgres_host = 'localhost'#os.environ.get('DATABASE_HOST')
     postgres_port = 5432#os.environ.get('postgresql', 'port')
     postgres_db = os.environ.get('DATABASE_DATABASE')
     postgres_restore = "{}_restore".format(postgres_db)

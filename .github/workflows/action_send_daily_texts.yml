@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  run:
+  send_daily_texts:
     runs-on: ubuntu-latest
 
     steps:
