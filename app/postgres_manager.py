@@ -13,6 +13,8 @@ import gzip
 import boto3
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+from dotenv import load_dotenv
+load_dotenv()
 
 # Amazon S3 settings.
 # AWS_ACCESS_KEY_ID  in ~/.aws/credentials
@@ -21,7 +23,7 @@ import datetime
 
 from shutil import move
 
-AWS_BUCKET_NAME = 'backup.mydomain.com'
+AWS_BUCKET_NAME = os.environ.get('S3_BUCKEt')
 AWS_BUCKET_PATH = 'postgres/'
 BACKUP_PATH = '/tmp/'
 
@@ -312,12 +314,12 @@ def main():
     # config = configparser.ConfigParser()
     # config.read(args.configfile)
 
-    postgres_host = os.environ.get('DATABASE_HOST')
-    postgres_port = 5432#os.environ.get('postgresql', 'port')
-    postgres_db = os.environ.get('DATABASE_DATABASE')
+    postgres_host = os.environ['DATABASE_HOST']
+    postgres_port = 5432#os.environ['postgresql', 'port']
+    postgres_db = os.environ['DATABASE_DATABASE']
     postgres_restore = "{}_restore".format(postgres_db)
-    postgres_user = os.environ.get('DATABASE_USER')
-    postgres_password = os.environ.get('DATABASE_PASSWORD')
+    postgres_user = os.environ['DATABASE_USER']
+    postgres_password = os.environ['DATABASE_PASSWORD']
     timestr = datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
     filename = 'backup-{}-{}.dump'.format(timestr, postgres_db)
     filename_compressed = '{}.gz'.format(filename)
