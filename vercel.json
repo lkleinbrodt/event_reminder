@@ -9,11 +9,13 @@
     "crons": [
         {
             "path": "/app/daily_text.py",
-            "schedule": "0 17 * * *"
+            "schedule": "0 17 * * *",
+            "use": "@vercel/python"
         },
         {
             "path": "/app/backup_database.py",
-            "schedule": "10 8 * * *"
+            "schedule": "10 8 * * *",
+            "use": "@vercel/python"
         }
     ]
 }
