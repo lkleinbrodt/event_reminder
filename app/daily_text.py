@@ -128,9 +128,9 @@ def daily_text():
                 users = [User(**date) for date in users]
             
 
-            for user in user():
+            for user in users:
                 try:
-                    text_one_user(text_bot, User(**user))  # Assuming there's a constructor for User
+                    text_one_user(text_bot, user)  # Assuming there's a constructor for User
                 except Exception as e:
                     logger.exception(f'Error sending daily text to {user} - {e}')
                     raise e
