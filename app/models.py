@@ -2,6 +2,8 @@ import sqlalchemy as sa
 import sqlalchemy.orm as so
 from sqlalchemy import DateTime
 from sqlalchemy.sql import func
+from typing import Tuple
+
 
 from flask_login import UserMixin
 from app import db, login
