@@ -31,16 +31,14 @@
             <div class="card">
                 <div class="card-body">
                     <h1 class="card-title text-center">Hello {{ current_user.display_phone_number() }}</h1>
-
-                    
                     <div class="container-buttons mt-3 text-center">
                         <!-- Buttons to open modals -->
                         <div class="d-flex flex-column align-items-center justify-content-center flex-md-row">
                             <button type="button" class="btn btn-primary mb-3 mb-md-0 mr-sm-0 mr-md-5" data-toggle="modal" data-target="#addSpecialDateModal">
-                                Add a Special Date
+                                Add One-Time Event
                             </button>
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addRecurringDateModal">
-                                Add a Recurring Date
+                                Add Recurring Event
                             </button>
                         </div>
                     </div>
@@ -48,12 +46,11 @@
                     
 
                     <!-- Modals -->
-                    <!-- Add Special Date Modal -->
                     <div class="modal fade" id="addSpecialDateModal" tabindex="-1" role="dialog" aria-labelledby="addSpecialDateModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="addSpecialDateModalLabel">Add a Special Date</h5>
+                                    <h5 class="modal-title" id="addSpecialDateModalLabel">Add an Event</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -85,7 +82,7 @@
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="addRecurringDateModalLabel">Add a Recurring Date</h5>
+                                    <h5 class="modal-title" id="addRecurringDateModalLabel">Add a Recurring Event</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -120,11 +117,10 @@
                         </div>
                     </div>
 
-                    <!-- Display Special Dates -->
                     <div id="specialDatesList" class="mt-4">
                         <h3 class="text-center">Events</h3>
-                        <ul class="list-group">
-                            {% if current_user.special_dates %}
+                        {% if current_user.special_dates %}
+                            <ul class="list-group">
                                 {% for special_date in current_user.get_sorted_special_dates() %}
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <div>
@@ -141,16 +137,23 @@
                                         </div>
                                     </li>
                                 {% endfor %}
+                            </ul>
                             {% else %}
-                                <li class="list-group-item text-center">No dates yet</li>
+                            <div class="text-center">
+                                <p class="text-muted">You haven't added any events yet.</p>
+                                <div class="container-buttons mt-3">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSpecialDateModal">
+                                        Add an event
+                                    </button>
+                                </div>
+                            </div>
+                            
                             {% endif %}
-                        </ul>
                     </div>
-                    <!-- Display Special Dates -->
                     <div id="recurringDatesList" class="mt-4">
                         <h3 class="text-center">Recurring Events</h3>
-                        <ul class="list-group">
-                            {% if current_user.recurring_dates %}
+                        {% if current_user.recurring_dates %}
+                            <ul class="list-group">
                                 {% for recurring_date in current_user.get_sorted_recurring_dates() %}
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <div data-toggle="tooltip" data-placement="top" title="({{recurring_date.get_days_away()}} days away)" style="cursor: default;" onclick="openTooltipOnMobile(this)">
@@ -165,8 +168,16 @@
                                         </form>
                                     </li>
                                 {% endfor %}
+                            </ul>
                             {% else %}
-                                <li class="list-group-item text-center">No dates yet</li>
+                                <div class="text-center">
+                                    <p class="text-muted">You haven't added any events yet.</p>
+                                    <div class="container-buttons mt-3">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addRecurringDateModal">
+                                            Add an event
+                                        </button>
+                                    </div>
+                                </div>
                             {% endif %}
 
                         </ul>

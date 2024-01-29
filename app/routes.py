@@ -214,6 +214,7 @@ def add_special_date():
             flash('Error saving event. Please try again.', 'error')
             return redirect(url_for('home'))
         
+        flash('Event saved successfully.', 'success')
         return redirect(url_for('home'))
     return redirect(url_for('home'))
 
@@ -243,6 +244,7 @@ def add_recurring_date():
             flash('Error saving event. Please try again.', 'error')
             return redirect(url_for('home'))
         
+        flash('Event saved successfully.', 'success')
         return redirect(url_for('home'))
     
     return redirect(url_for('home'))
