@@ -57,16 +57,17 @@ def text_one_user(text_bot: TwilioTextBot, user: User):
             SELECT * FROM recurring_date
             WHERE user_phone_number = %s
         """
-
-        # Execute the queries with parameters
-        cursor.execute(special_dates_query, (user.phone_number,))
-        special_dates = pd.read_sql_query(special_dates_query, connection, params=(user.phone_number,))
-
-        cursor.execute(recurring_dates_query, (user.phone_number,))
-        recurring_dates = pd.read_sql_query(recurring_dates_query, connection, params=(user.phone_number,))
-        
-        special_dates = [SpecialDate(**date) for _, date in special_dates.iterrows()]
-        recurring_dates = [RecurringDate(**date) for _, date in recurring_dates.iterrows()]
+        with connection.cursor() as cursor:
+            # Execute the query
+            cursor.execute(special_dates_query, (user.phone_number,))
+            columns = [desc[0] for desc in cursor.description]
+            special_dates = [dict(zip(columns, row)) for row in cursor.fetchall()]
+            special_dates = [SpecialDate(**date) for date in special_dates]
+            
+            cursor.execute(recurring_dates_query, (user.phone_number,))
+            columns = [desc[0] for desc in cursor.description]
+            recurring_dates = [dict(zip(columns, row)) for row in cursor.fetchall()]
+            recurring_dates = [RecurringDate(**date) for date in recurring_dates]
 
         special_date_reminders = []
         recurring_date_reminders = []
@@ -114,7 +115,6 @@ def daily_text():
     if os.environ.get('ENV') == 'prod':
         # Use the database connection
         connection = connect_to_database()
-        cursor = connection.cursor()
 
         try:
             #have to use "" around user because it's a reserved word in postgres
@@ -122,15 +122,18 @@ def daily_text():
             users_query = """
                 SELECT * FROM "user" 
             """
-            users_df = pd.read_sql_query(users_query, connection)
+            with connection.cursor() as cursor:
+                cursor.execute(users_query)
+                columns = [desc[0] for desc in cursor.description]
+                users = [dict(zip(columns, row)) for row in cursor.fetchall()]
+                users = [User(**date) for date in users]
             
 
-            for _, user in users_df.iterrows():
-                user_dict = user.to_dict()
+            for user in user():
                 try:
-                    text_one_user(text_bot, User(**user_dict))  # Assuming there's a constructor for User
+                    text_one_user(text_bot, User(**user))  # Assuming there's a constructor for User
                 except Exception as e:
-                    logger.exception(f'Error sending daily text to {user[2]} - {e}')
+                    logger.exception(f'Error sending daily text to {user} - {e}')
                     raise e
 
         except Exception as e:
@@ -144,26 +147,29 @@ def daily_text():
     else:
         # Use the database connection
         connection = connect_to_database()
-        cursor = connection.cursor()
+        
 
         try:
             #have to use "" around user because it's a reserved word in postgres
             # #TODO: fix this
-            user_query = """
+            users_query = """
                 SELECT * FROM "user"
                 WHERE phone_number = '14153064760'
             """
-            users_df = pd.read_sql_query(user_query, connection)
-            
-            for _, user in users_df.iterrows():
-                user_dict = user.to_dict()
+            with connection.cursor() as cursor:
+                cursor.execute(users_query)
+                columns = [desc[0] for desc in cursor.description]
+                users = [dict(zip(columns, row)) for row in cursor.fetchall()]
+                users = [User(**date) for date in users]
+        
 
-            if users_df.shape[0] > 0:
+            if users:
+                user = users[0]
                 try:
-                    text_one_user(text_bot, User(**user_dict))  # Assuming there's a constructor for User
+                    text_one_user(text_bot, user)  # Assuming there's a constructor for User
                     logger.info(f'Sent daily text to {user.phone_number}')
                 except Exception as e:
-                    logger.exception(f'Error sending daily text to {user[2]} - {e}')
+                    logger.exception(f'Error sending daily text to {user} - {e}')
                     raise e
 
         except Exception as e:
