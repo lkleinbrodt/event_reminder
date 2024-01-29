@@ -82,6 +82,8 @@ def text_one_user(text_bot: TwilioTextBot, user: User):
                     recurring_date_reminders.append(date)
         
         date_reminders = special_date_reminders + recurring_date_reminders
+        date_reminders = sorted(date_reminders, key=lambda x: x.to_date())
+        
         
         if len(date_reminders) > 0:
             message = "The following important dates are coming up soon:"
