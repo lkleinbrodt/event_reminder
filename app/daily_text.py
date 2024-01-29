@@ -5,7 +5,6 @@ from app.twilio_bot import TwilioTextBot
 from app.models import User, SpecialDate, RecurringDate
 from dotenv import load_dotenv
 import logging
-import pandas as pd
 load_dotenv()
 
 # Set up the logger
