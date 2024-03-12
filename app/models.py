@@ -69,7 +69,6 @@ class User(UserMixin, db.Model):
     remind_on_day = db.Column(db.Boolean, default=True)
     
     role = db.Column(db.String(80), default='user')
-
     
     password_hash: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
     

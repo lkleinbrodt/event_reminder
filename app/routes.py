@@ -343,8 +343,6 @@ def generate_verification_code():
 @app.route('/admin')
 @login_required
 def admin():
-    print('hey')
-    print(current_user.phone_number)
     if current_user.is_admin():
         return admin.index()
     else:
